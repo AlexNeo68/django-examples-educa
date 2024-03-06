@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from braces.views  import CsrfExemptMixin, JsonRequestResponseMixin
 
 from .forms import ModuleFormSet
 
@@ -140,6 +141,19 @@ class ContentDeleteView(View):
 class ModuleContentListView(TemplateResponseMixin, View):
     template_name = 'courses/manage/module/content_list.html'
 
-    def get(self, request, module_id):
-        module = get_object_or_404(Module, id=module_id, course__owner=request.user)
+    def get(self, request, id):
+        module = get_object_or_404(Module, id=id, course__owner=request.user)
         return self.render_to_response({'module': module})
+    
+class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Module.objects.filter(id=id, course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
+    
+
+class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Content.objects.filter(id=id, course__owner=request.user).update(order=order)
+        return self.render_json_response({'saved': 'OK'})
