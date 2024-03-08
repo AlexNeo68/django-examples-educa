@@ -1,48 +1,20 @@
 {% extends "base.html" %}
 
-{% block title %}
-
-    {% if subject %}
-        {{subject.title}} courses
-    {% else %}
-        All courses
-    {% endif %} 
-
-{% endblock title %}
+{% block title %}{{object.title}}{% endblock title %}
 
 {% block content %}
-    <h1>
-        {% if subject %}
-            {{subject.title}} courses
-        {% else %}
-            All courses
-        {% endif %} 
-    </h1>
-
-    <div class="contents">
-        <h3>Subjects</h3>
-        <ul id="modules">
-            {% for s in subjects %}
-                <li {% if subject == s %}class="selected"{% endif %}>
-                    <a href="{% url "course_list_subject" s.slug %}">
-                        {{ s.title }}
-                        <br>
-                        <span>
-                            {{ s.total_courses }} course{{s.total_courses|pluralize}}
-                        </span>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="module">
-        {% for course in courses %}
-            {% with subject=course.subject %}
-                <h3>
-                    
-                </h3>
-            
-            {% endwith %}
-        {% endfor %}
-    </div>
+    {% with subject=course.subject %}
+        <h1>{{object.title}}</h1>
+        <div class="module">
+            <h2>Overview</h2>
+            <p>
+                <a href="{% url "course_list_subject" subject.slug %}">
+                    {{subject.title}}
+                </a>.
+                {{ object.modules.count }} modules.
+                Instructor: {{ object.owner.get_full_name }}
+            </p>
+            {{object.overview|linebreaks}}
+        </div>
+    {% endwith %}
 {% endblock content %}
