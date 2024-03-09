@@ -12,6 +12,7 @@ from django.views.generic import CreateView, DeleteView, DetailView, ListView, U
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from braces.views  import CsrfExemptMixin, JsonRequestResponseMixin
 from students.forms import CourseEnrollForm
+from django.core.cache import cache
 
 from .forms import ModuleFormSet
 
@@ -165,7 +166,10 @@ class CourseListView(TemplateResponseMixin, View):
     model = Course
     template_name = 'courses/course/list.html'
     def get(self, request, subject=None):
-        subjects = Subject.objects.annotate(total_courses=Count('courses'))
+        subjects = cache.get('all_subjects')
+        if not subjects:
+            subjects = Subject.objects.annotate(total_courses=Count('courses'))
+            cache.set('all_subjects', subjects)
         courses = Course.objects.annotate(total_modules=Count('modules'))
         
         if subject:
