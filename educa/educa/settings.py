@@ -18,7 +18,6 @@ from django.urls import reverse_lazy
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -29,7 +28,6 @@ SECRET_KEY = "django-insecure-a!nn3t66@k_yz5bu8-!^z_4u&plti3epi0_z=)!7@+-8(m!^=2
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -44,25 +42,27 @@ INSTALLED_APPS = [
     # local
     "courses.apps.CoursesConfig",
     "students.apps.StudentsConfig",
+    "chat",
 
-    #third
+    # third
     "embed_video",
     "debug_toolbar",
     "redisboard",
     "rest_framework",
+    "channels",
 ]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    
-    #cache
+
+    # cache
     # "django.middleware.cache.UpdateCacheMiddleware",
 
     "django.middleware.common.CommonMiddleware",
-  
-    #cache
+
+    # cache
     # "django.middleware.cache.FetchFromCacheMiddleware",
 
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -91,7 +91,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "educa.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -101,7 +100,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -121,7 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -132,7 +129,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -165,16 +161,17 @@ CACHES = {
 }
 
 CACHE_MIDDLEWARE_ALIAS = 'default'
-CACHE_MIDDLEWARE_SECONDS = 60 * 15 # 15 минут
+CACHE_MIDDLEWARE_SECONDS = 60 * 15  # 15 минут
 CACHE_MIDDLEWARE_KEY_PREFIX = 'educa'
 
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+ASGI_APPLICATION = 'educa.asgi.application'

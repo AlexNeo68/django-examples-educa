@@ -13,8 +13,7 @@ print(f'Available courses: {available_courses}')
 for course in courses:
   course_id = course['id']
   course_title = course['title']
-  r = requests.post(f'{base_url}courses/{course_id}/enroll/',
-                                  auth=('alex', '123'))
+  r = requests.post(f'{base_url}courses/{course_id}/enroll/', auth=('alex', '123'))
   if r.status_code == 200:
     # successful request
     print(f'Successfully enrolled in {course_title}')
