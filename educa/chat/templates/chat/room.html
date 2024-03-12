@@ -27,7 +27,9 @@
     )
 
     const url = 'ws://' + window.location.host + '/ws/chat/room/' + courseId + '/';
+
     const chatSocket = new WebSocket(url);
+
     chatSocket.onmessage = function(event) {
         const data = JSON.parse(event.data);
         const chat = document.getElementById('chat');
@@ -44,7 +46,7 @@
         const message = input.value;
         if(message){
             chatSocket.send(JSON.stringify({'message':message}));
-            input.innerHTML = '';
+            input.value = '';
             input.focus();
         }
     })
