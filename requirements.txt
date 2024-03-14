@@ -22,6 +22,7 @@ idna==3.6
 incremental==22.10.0
 msgpack==1.0.8
 pillow==10.2.0
+psycopg2==2.9.9
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
 pycparser==2.21
@@ -38,3 +39,4 @@ txaio==23.1.1
 typing_extensions==4.10.0
 urllib3==2.2.1
 zope.interface==6.2
+
