@@ -15,7 +15,8 @@ services:
       - POSTGRES_PASSWORD=postgres
   web:
     build: .
-    command: [ "./wait-for-it.sh", "db:5432", "--", "uwsgi", "--ini", "/code/config/uwsgi/uwsgi.ini" ]
+    command: [ "./wait-for-it.sh", "db:5432", "--",
+               "uwsgi", "--ini", "/code/config/uwsgi/uwsgi.ini" ]
 #    command: ["./wait-for-it.sh", "db:5432", "--", "python", "/code/educa/manage.py", "runserver", "0.0.0.0:8000"]
     restart: always
     volumes:
@@ -28,6 +29,25 @@ services:
     depends_on:
       - db
       - cache
+
+  daphne:
+    build: .
+    working_dir: /code/educa/
+    command: [ "../wait-for-it.sh", "db:5432", "--",
+               "daphne", "-b", "0.0.0.0", "-p", "9001",
+               "educa.asgi:application" ]
+    restart: always
+    volumes:
+      - .:/code
+    environment:
+      - DJANGO_SETTINGS_MODULE=educa.settings.prod
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+      - cache
+
   nginx:
     image: nginx:1.23.1
     restart: always
@@ -35,4 +55,5 @@ services:
       - ./config/nginx:/etc/nginx/templates
       - .:/code
     ports:
-      - "80:80"
+#      - "80:80"
+      - "443:443"
