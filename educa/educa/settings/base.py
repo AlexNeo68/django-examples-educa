@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+import sentry_sdk
 
 from pathlib import Path
 
@@ -179,3 +180,15 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+sentry_sdk.init(
+    dsn="https://edfad812b9c7d6b8a44b36d7a6eb91e6@o4506663957168128.ingest.us.sentry.io/4506924567822336",
+    enable_tracing=True,
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)

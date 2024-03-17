@@ -3,7 +3,7 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['.educaproject.com']
+ALLOWED_HOSTS = ['.p-pro.org']
 
 ADMINS = [
     ('Antonio M', 'email@mydomain.com'),
